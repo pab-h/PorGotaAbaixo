@@ -1,5 +1,13 @@
 import * as THREE from "three";
 import * as CANNON from "cannon-es";
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+/* Carregando as texturas */
+
+const loader = new THREE.TextureLoader();
+
+const groundTexture = loader.load("../textures/ground.jpg");
+groundTexture.colorSpace = THREE.SRGBColorSpace;
 
 /* Configuração da Cena */
 
@@ -12,7 +20,8 @@ const camera = new THREE.PerspectiveCamera(
   1000 
 );
 
-camera.position.z = 5;
+camera.position.z = 10;
+camera.position.y = 10;
 
 const renderer = new THREE.WebGLRenderer();
 
@@ -20,30 +29,86 @@ renderer.setSize(
   window.innerWidth, 
   window.innerHeight 
 );
-renderer.setAnimationLoop(animate);
 
 document.body.appendChild(renderer.domElement);
+
+/* Configurando os controle de orbita */
+
+const controls = new OrbitControls(
+  camera,
+  renderer.domElement
+);
+
+controls.update();
 
 /* Configuração do visual da Esfera */
 
 
 const radius = 1;
 
-const geometry = new THREE.SphereGeometry(radius);
-const material = new THREE.MeshNormalMaterial();
+const sphereGeometry = new THREE.SphereGeometry(radius);
+const sphereMaterial = new THREE.MeshNormalMaterial();
 
 const sphereMesh = new THREE.Mesh(
-  geometry,
-  material
+  sphereGeometry,
+  sphereMaterial
 );
 
 scene.add(sphereMesh);
 
+/* Configuração do telhado */
+
+const roofWidth = 15;
+const roofHeight = 15;
+
+const roofGeometry = new THREE.PlaneGeometry(
+  roofWidth,
+  roofHeight
+);
+const roofMaterial = new THREE.MeshBasicMaterial({
+  color: "blue",
+  side: THREE.DoubleSide
+});
+
+const roofMesh = new THREE.Mesh(
+  roofGeometry,
+  roofMaterial
+);
+
+roofMesh.position.y = 25;
+
+roofMesh.rotateOnAxis(
+  new THREE.Vector3(1, 0, 0),
+  Math.PI / 2
+);
+
+scene.add(roofMesh);
 /* Configuração da física do mundo */
 
 const world = new CANNON.World({
   gravity: new CANNON.Vec3(0, -9.82, 0)
 });
+
+/* Configuração do chão */
+
+const groundWidth = 25;
+const groundHeight = 25;
+
+const groundGeometry = new THREE.PlaneGeometry(
+  groundWidth,
+  groundHeight
+);
+const groundMaterial = new THREE.MeshBasicMaterial({
+  map: groundTexture,
+  side: THREE.DoubleSide
+});
+
+const groundMesh = new THREE.Mesh(
+  groundGeometry,
+  groundMaterial
+);
+
+scene.add(groundMesh);
 
 const groundBody = new CANNON.Body({
   type: CANNON.Body.STATIC,
@@ -57,6 +122,9 @@ groundBody.quaternion.setFromEuler(
 );
 
 world.addBody(groundBody);
+
+groundMesh.position.copy(groundBody.position);
+groundMesh.quaternion.copy(groundBody.quaternion);
 
 /* Configuração da física da Esfera */
 
@@ -73,6 +141,8 @@ world.addBody(sphereBody);
 
 function animate() {
 
+  controls.update();
+
   world.fixedStep();
 
   sphereMesh.position.copy(sphereBody.position);
@@ -84,3 +154,5 @@ function animate() {
   );
 
 }
+
+renderer.setAnimationLoop(animate);
