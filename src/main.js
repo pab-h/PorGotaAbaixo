@@ -1,6 +1,10 @@
-import * as THREE from 'three';
+import * as THREE from "three";
+import * as CANNON from "cannon-es";
+
+/* Configuração da Cena */
 
 const scene = new THREE.Scene();
+
 const camera = new THREE.PerspectiveCamera(
   75, 
   window.innerWidth / window.innerHeight, 
@@ -8,23 +12,75 @@ const camera = new THREE.PerspectiveCamera(
   1000 
 );
 
+camera.position.z = 5;
+
 const renderer = new THREE.WebGLRenderer();
-renderer.setSize( window.innerWidth, window.innerHeight );
+
+renderer.setSize(
+  window.innerWidth, 
+  window.innerHeight 
+);
 renderer.setAnimationLoop(animate);
+
 document.body.appendChild(renderer.domElement);
 
-const geometry = new THREE.BoxGeometry( 1, 1, 1 );
-const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
-const cube = new THREE.Mesh( geometry, material );
-scene.add( cube );
+/* Configuração do visual da Esfera */
 
-camera.position.z = 5;
+
+const radius = 1;
+
+const geometry = new THREE.SphereGeometry(radius);
+const material = new THREE.MeshNormalMaterial();
+
+const sphereMesh = new THREE.Mesh(
+  geometry,
+  material
+);
+
+scene.add(sphereMesh);
+
+/* Configuração da física do mundo */
+
+const world = new CANNON.World({
+  gravity: new CANNON.Vec3(0, -9.82, 0)
+});
+
+const groundBody = new CANNON.Body({
+  type: CANNON.Body.STATIC,
+  shape: new CANNON.Plane()
+});
+
+groundBody.quaternion.setFromEuler(
+  - Math.PI / 2, 
+  0,
+  0
+);
+
+world.addBody(groundBody);
+
+/* Configuração da física da Esfera */
+
+const sphereBody = new CANNON.Body({
+  mass: 5,
+  shape: new CANNON.Sphere(radius)
+});
+sphereBody.position.set(0, 10, 0);
+
+world.addBody(sphereBody);
+
+
+/* Processo de rendenização */
 
 function animate() {
 
-	cube.rotation.x += 0.01;
-	cube.rotation.y += 0.01;
+  world.fixedStep();
 
-	renderer.render( scene, camera );
+  sphereMesh.position.copy(sphereBody.position);
+  sphereMesh.quaternion.copy(sphereBody.quaternion);
+
+	renderer.render( 
+    scene, 
+    camera 
+  );
 
 }
