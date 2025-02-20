@@ -2,6 +2,13 @@ import * as THREE from "three";
 import * as CANNON from "cannon-es";
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
+/* Carregando as texturas */
+
+const loader = new THREE.TextureLoader();
+
+const groundTexture = loader.load("../textures/ground.jpg");
+groundTexture.colorSpace = THREE.SRGBColorSpace;
+
 /* Configuração da Cena */
 
 const scene = new THREE.Scene();
@@ -13,7 +20,8 @@ const camera = new THREE.PerspectiveCamera(
   1000 
 );
 
-camera.position.z = 5;
+camera.position.z = 10;
+camera.position.y = 10;
 
 const renderer = new THREE.WebGLRenderer();
 
@@ -56,14 +64,16 @@ const world = new CANNON.World({
 
 /* Configuração do chão */
 
-const groundWidth = 5;
-const groundHeight = 5;
+const groundWidth = 15;
+const groundHeight = 15;
 
 const groundGeometry = new THREE.PlaneGeometry(
   groundWidth,
   groundHeight
 );
-const groundMaterial = new THREE.MeshNormalMaterial();
+const groundMaterial = new THREE.MeshBasicMaterial({
+  map: groundTexture
+});
 
 const groundMesh = new THREE.Mesh(
   groundGeometry,
