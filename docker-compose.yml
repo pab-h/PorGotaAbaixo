@@ -1,0 +1,10 @@
+services:
+  web:
+    container_name: porgotaabaixo
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/usr/app
