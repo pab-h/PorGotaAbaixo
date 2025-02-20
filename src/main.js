@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import * as CANNON from "cannon-es";
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 /* Configuração da Cena */
 
@@ -20,21 +21,29 @@ renderer.setSize(
   window.innerWidth, 
   window.innerHeight 
 );
-renderer.setAnimationLoop(animate);
 
 document.body.appendChild(renderer.domElement);
+
+/* Configurando os controle de orbita */
+
+const controls = new OrbitControls(
+  camera,
+  renderer.domElement
+);
+
+controls.update();
 
 /* Configuração do visual da Esfera */
 
 
 const radius = 1;
 
-const geometry = new THREE.SphereGeometry(radius);
-const material = new THREE.MeshNormalMaterial();
+const sphereGeometry = new THREE.SphereGeometry(radius);
+const sphereMaterial = new THREE.MeshNormalMaterial();
 
 const sphereMesh = new THREE.Mesh(
-  geometry,
-  material
+  sphereGeometry,
+  sphereMaterial
 );
 
 scene.add(sphereMesh);
@@ -44,6 +53,24 @@ scene.add(sphereMesh);
 const world = new CANNON.World({
   gravity: new CANNON.Vec3(0, -9.82, 0)
 });
+
+/* Configuração do chão */
+
+const groundWidth = 5;
+const groundHeight = 5;
+
+const groundGeometry = new THREE.PlaneGeometry(
+  groundWidth,
+  groundHeight
+);
+const groundMaterial = new THREE.MeshNormalMaterial();
+
+const groundMesh = new THREE.Mesh(
+  groundGeometry,
+  groundMaterial
+);
+
+scene.add(groundMesh);
 
 const groundBody = new CANNON.Body({
   type: CANNON.Body.STATIC,
@@ -57,6 +84,9 @@ groundBody.quaternion.setFromEuler(
 );
 
 world.addBody(groundBody);
+
+groundMesh.position.copy(groundBody.position);
+groundMesh.quaternion.copy(groundBody.quaternion);
 
 /* Configuração da física da Esfera */
 
@@ -73,6 +103,8 @@ world.addBody(sphereBody);
 
 function animate() {
 
+  controls.update();
+
   world.fixedStep();
 
   sphereMesh.position.copy(sphereBody.position);
@@ -84,3 +116,5 @@ function animate() {
   );
 
 }
+
+renderer.setAnimationLoop(animate);
