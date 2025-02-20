@@ -56,6 +56,33 @@ const sphereMesh = new THREE.Mesh(
 
 scene.add(sphereMesh);
 
+/* Configuração do telhado */
+
+const roofWidth = 15;
+const roofHeight = 15;
+
+const roofGeometry = new THREE.PlaneGeometry(
+  roofWidth,
+  roofHeight
+);
+const roofMaterial = new THREE.MeshBasicMaterial({
+  color: "blue",
+  side: THREE.DoubleSide
+});
+
+const roofMesh = new THREE.Mesh(
+  roofGeometry,
+  roofMaterial
+);
+
+roofMesh.position.y = 25;
+
+roofMesh.rotateOnAxis(
+  new THREE.Vector3(1, 0, 0),
+  Math.PI / 2
+);
+
+scene.add(roofMesh);
 /* Configuração da física do mundo */
 
 const world = new CANNON.World({
@@ -64,15 +91,16 @@ const world = new CANNON.World({
 
 /* Configuração do chão */
 
-const groundWidth = 15;
-const groundHeight = 15;
+const groundWidth = 25;
+const groundHeight = 25;
 
 const groundGeometry = new THREE.PlaneGeometry(
   groundWidth,
   groundHeight
 );
 const groundMaterial = new THREE.MeshBasicMaterial({
-  map: groundTexture
+  map: groundTexture,
+  side: THREE.DoubleSide
 });
 
 const groundMesh = new THREE.Mesh(
