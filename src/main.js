@@ -8,6 +8,8 @@ import { Roof } from "./entity/Roof";
 
 import { Textures } from "./utils/Textures";
 
+/* instanciando os objetos em cena */
+
 const textures = new Textures();
 
 const scene = new THREE.Scene();
@@ -43,7 +45,11 @@ const world = new CANNON.World({
 });
 
 
-const player = new Player(3);
+const player = new Player({
+  width: 5,
+  height: 10,
+  depth: 5
+});
 
 scene.add(player.mesh);
 world.addBody(player.body);
@@ -66,6 +72,13 @@ const ground = new Ground({
 scene.add(ground.mesh);
 world.addBody(ground.body);
 
+/* Inputs do usuário */
+
+window.addEventListener("keypress", e => {
+  player.keypress(e);
+});
+
+/* Rendenização */
 
 function animate() {
 
