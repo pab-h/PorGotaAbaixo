@@ -2,14 +2,15 @@ import * as THREE from "three";
 import * as CANNON from "cannon-es";
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
-/* Carregando as texturas */
+import { Player } from "./entity/Player";
+import { Ground } from "./entity/Ground";
+import { Roof } from "./entity/Roof";
 
-const loader = new THREE.TextureLoader();
+import { Textures } from "./utils/Textures";
 
-const groundTexture = loader.load("../textures/ground.jpg");
-groundTexture.colorSpace = THREE.SRGBColorSpace;
+/* instanciando os objetos em cena */
 
-/* Configuração da Cena */
+const textures = new Textures();
 
 const scene = new THREE.Scene();
 
@@ -20,8 +21,8 @@ const camera = new THREE.PerspectiveCamera(
   1000 
 );
 
-camera.position.z = 10;
-camera.position.y = 10;
+camera.position.z = 60;
+camera.position.y = 60;
 
 const renderer = new THREE.WebGLRenderer();
 
@@ -32,8 +33,6 @@ renderer.setSize(
 
 document.body.appendChild(renderer.domElement);
 
-/* Configurando os controle de orbita */
-
 const controls = new OrbitControls(
   camera,
   renderer.domElement
@@ -41,112 +40,53 @@ const controls = new OrbitControls(
 
 controls.update();
 
-/* Configuração do visual da Esfera */
-
-
-const radius = 1;
-
-const sphereGeometry = new THREE.SphereGeometry(radius);
-const sphereMaterial = new THREE.MeshNormalMaterial();
-
-const sphereMesh = new THREE.Mesh(
-  sphereGeometry,
-  sphereMaterial
-);
-
-scene.add(sphereMesh);
-
-/* Configuração do telhado */
-
-const roofWidth = 15;
-const roofHeight = 15;
-
-const roofGeometry = new THREE.PlaneGeometry(
-  roofWidth,
-  roofHeight
-);
-const roofMaterial = new THREE.MeshBasicMaterial({
-  color: "blue",
-  side: THREE.DoubleSide
-});
-
-const roofMesh = new THREE.Mesh(
-  roofGeometry,
-  roofMaterial
-);
-
-roofMesh.position.y = 25;
-
-roofMesh.rotateOnAxis(
-  new THREE.Vector3(1, 0, 0),
-  Math.PI / 2
-);
-
-scene.add(roofMesh);
-/* Configuração da física do mundo */
-
 const world = new CANNON.World({
   gravity: new CANNON.Vec3(0, -9.82, 0)
 });
 
-/* Configuração do chão */
 
-const groundWidth = 25;
-const groundHeight = 25;
-
-const groundGeometry = new THREE.PlaneGeometry(
-  groundWidth,
-  groundHeight
-);
-const groundMaterial = new THREE.MeshBasicMaterial({
-  map: groundTexture,
-  side: THREE.DoubleSide
+const player = new Player({
+  width: 5,
+  height: 10,
+  depth: 5
 });
 
-const groundMesh = new THREE.Mesh(
-  groundGeometry,
-  groundMaterial
-);
+scene.add(player.mesh);
+world.addBody(player.body);
 
-scene.add(groundMesh);
 
-const groundBody = new CANNON.Body({
-  type: CANNON.Body.STATIC,
-  shape: new CANNON.Plane()
+const roof = new Roof({
+  width: 50, 
+  height: 50
 });
 
-groundBody.quaternion.setFromEuler(
-  - Math.PI / 2, 
-  0,
-  0
-);
+scene.add(roof.mesh);
 
-world.addBody(groundBody);
 
-groundMesh.position.copy(groundBody.position);
-groundMesh.quaternion.copy(groundBody.quaternion);
-
-/* Configuração da física da Esfera */
-
-const sphereBody = new CANNON.Body({
-  mass: 5,
-  shape: new CANNON.Sphere(radius)
+const ground = new Ground({  
+  width: 50, 
+  height: 50, 
+  texture: textures.ground
 });
-sphereBody.position.set(0, 10, 0);
 
-world.addBody(sphereBody);
+scene.add(ground.mesh);
+world.addBody(ground.body);
 
+/* Inputs do usuário */
 
-/* Processo de rendenização */
+window.addEventListener("keypress", e => {
+  player.keypress(e);
+});
+
+/* Rendenização */
 
 function animate() {
 
   controls.update();
+  
+  player.update();
 
   world.fixedStep();
-
-  sphereMesh.position.copy(sphereBody.position);
-  sphereMesh.quaternion.copy(sphereBody.quaternion);
 
 	renderer.render( 
     scene, 
