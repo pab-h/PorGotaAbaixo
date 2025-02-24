@@ -5,6 +5,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { Player } from "./entity/Player";
 import { Ground } from "./entity/Ground";
 import { Roof } from "./entity/Roof";
+import { Particles } from "./entity/Particles";
 
 import { Textures } from "./utils/Textures";
 import { Bucket } from "./entity/Bucket";
@@ -98,6 +99,19 @@ window.addEventListener('keyup', (event) => {
   player.keypress(keysPressed);
 });
 
+/* Particulas */
+const particlesFactory = new Particles({
+  elementReference: roof,
+  texture: textures.ground,
+  world: world,
+  scene: scene
+});
+
+particlesFactory.createParticles(2);
+
+let counter = 0;
+
+
 /* Rendenização */
 
 function animate() {
@@ -107,13 +121,30 @@ function animate() {
   player.update();
   bucket.update();
 
-  world.fixedStep();
+  world.step(1 / 60); // Configura os passos da simulação em 60Hz
+  //world.fixedStep();
+
+  particlesFactory.updateParticles();
 
 	renderer.render( 
     scene, 
     camera 
   );
 
+  
+
+  counter++
+  if(counter % 100 == 0){
+    particlesFactory.createParticles(1);
+  }
+  if(counter > 205) {
+    particlesFactory.removeParticles(1);
+    counter = 0;
+  }
+
+
+  console.log(counter);
+    
 }
 
 renderer.setAnimationLoop(animate);
