@@ -7,6 +7,7 @@ import { Ground } from "./entity/Ground";
 import { Roof } from "./entity/Roof";
 
 import { Textures } from "./utils/Textures";
+import { Bucket } from "./entity/Bucket";
 
 /* instanciando os objetos em cena */
 
@@ -54,6 +55,17 @@ const player = new Player({
 scene.add(player.mesh);
 world.addBody(player.body);
 
+const bucket = new Bucket({
+  player: player,
+  
+  width: 5,
+  height: 5,
+  depth: 5
+});
+
+scene.add(bucket.mesh);
+world.addBody(bucket.body);
+
 
 const roof = new Roof({
   width: 50, 
@@ -93,6 +105,7 @@ function animate() {
   controls.update();
   
   player.update();
+  bucket.update();
 
   world.fixedStep();
 
