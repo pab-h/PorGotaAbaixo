@@ -3,9 +3,8 @@ import * as CANNON from "cannon-es";
 
 class Particles {
 
-    constructor({ elementReference, texture, world, scene }) {
+    constructor({ elementReference, world, scene }) {
         this.elementReference = elementReference;
-        this.texture = texture;
         this.world = world;
         this.scene = scene;
 
