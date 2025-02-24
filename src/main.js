@@ -120,8 +120,7 @@ function animate() {
   player.update();
   bucket.update();
 
-  world.step(1 / 60); // Configura os passos da simulação em 60Hz
-  //world.fixedStep();
+  world.step(1 / 60);
 
   particlesFactory.updateParticles();
 
