@@ -50,7 +50,6 @@ class Player {
             //Movimento Frente - Direita
             this.body.position.z -= 1;
             this.body.position.x += 1;
-
           } else if (e['w'] && e['a']) {
             //Movimento Frente - Esquerda
             this.body.position.z -= 1;
@@ -63,8 +62,7 @@ class Player {
             //Movimento Tras - Esquerda
             this.body.position.z += 1;
             this.body.position.x -= 1;
-          } else {
-            if (e['w']) {
+          } else if (e['w']) {
                 this.body.position.z -= 1
             } else if (e['s']) {
                 this.body.position.z += 1
@@ -73,9 +71,6 @@ class Player {
             } else if (e['d']) {
                 this.body.position.x += 1
             }
-        }
-
-       
 
     }
 
