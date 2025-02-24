@@ -109,7 +109,7 @@ const particlesFactory = new Particles({
 
 particlesFactory.createParticles(2);
 
-let counter = 0;
+let dropTimer = 0;
 
 
 /* Rendenização */
@@ -131,20 +131,19 @@ function animate() {
     camera 
   );
 
-  
 
-  counter++
-  if(counter % 100 == 0){
+  if(dropTimer % 100 == 0){
     particlesFactory.createParticles(1);
   }
-  if(counter > 205) {
+
+  if(dropTimer > 205) {
     particlesFactory.removeParticles(1);
-    counter = 0;
+    dropTimer = 0;
   }
 
+  dropTimer++;
 
-  console.log(counter);
-    
+
 }
 
 renderer.setAnimationLoop(animate);
