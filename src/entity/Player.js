@@ -43,23 +43,39 @@ class Player {
 
     keypress(e) {
 
-        const { key } = e;
+        if(!(e['w'] || e['a'] || e['s'] || e['d']))
+            return;
 
-        if (key == "w") {
-            this.body.position.z -= 1
+        if (e['w'] && e['d']) {
+            //Movimento Frente - Direita
+            this.body.position.z -= 1;
+            this.body.position.x += 1;
+
+          } else if (e['w'] && e['a']) {
+            //Movimento Frente - Esquerda
+            this.body.position.z -= 1;
+            this.body.position.x -= 1;
+          } else if (e['s'] && e['d']) {
+            //Movimento Tras - Direita
+            this.body.position.z += 1;
+            this.body.position.x += 1;
+          } else if (e['s'] && e['a']) {
+            //Movimento Tras - Esquerda
+            this.body.position.z += 1;
+            this.body.position.x -= 1;
+          } else {
+            if (e['w']) {
+                this.body.position.z -= 1
+            } else if (e['s']) {
+                this.body.position.z += 1
+            } else if (e['a']) {
+                this.body.position.x -= 1
+            } else if (e['d']) {
+                this.body.position.x += 1
+            }
         }
 
-        if (key == "s") {
-            this.body.position.z += 1
-        }
-
-        if (key == "a") {
-            this.body.position.x -= 1
-        }
-
-        if (key == "d") {
-            this.body.position.x += 1
-        }
+       
 
     }
 

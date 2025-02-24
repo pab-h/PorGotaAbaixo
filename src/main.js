@@ -57,11 +57,11 @@ world.addBody(player.body);
 
 const roof = new Roof({
   width: 50, 
-  height: 50
+  height: 50,
+  texture: textures.ground
 });
 
 scene.add(roof.mesh);
-
 
 const ground = new Ground({  
   width: 50, 
@@ -74,8 +74,16 @@ world.addBody(ground.body);
 
 /* Inputs do usuário */
 
-window.addEventListener("keypress", e => {
-  player.keypress(e);
+const keysPressed = {};
+
+window.addEventListener('keydown', (event) => {
+  keysPressed[event.key.toLowerCase()] = true;
+  player.keypress(keysPressed);
+});
+
+window.addEventListener('keyup', (event) => {
+  keysPressed[event.key.toLowerCase()] = false;
+  player.keypress(keysPressed);
 });
 
 /* Rendenização */
