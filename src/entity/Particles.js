@@ -26,7 +26,7 @@ class Particles {
 
         const x = this.getRandomInt(min_x, max_x);
         const y = this.elementReference.getPosition().y + 1;  
-        z = this.getRandomInt(min_z, max_z);;
+        const z = this.getRandomInt(min_z, max_z);;
 
         return new CANNON.Vec3(x, y, z);
     }
