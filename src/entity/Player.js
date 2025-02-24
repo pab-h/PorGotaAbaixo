@@ -32,7 +32,7 @@ class Player {
             )
         });
 
-        this.body.position.set(0, 10, 0);
+        this.body.position.set(0, this.depth, 0);
 
     }
 
@@ -41,36 +41,39 @@ class Player {
         this.mesh.quaternion.copy(this.body.quaternion);
     }
 
-    keypress(e) {
+    keypress(keysPressed) {
 
-        if(!(e['w'] || e['a'] || e['s'] || e['d']))
+        if(!(keysPressed['w'] || keysPressed['a'] || keysPressed['s'] || keysPressed['d']))
             return;
 
-        if (e['w'] && e['d']) {
+        if (keysPressed['w'] && keysPressed['d']) {
             //Movimento Frente - Direita
             this.body.position.z -= 1;
             this.body.position.x += 1;
-          } else if (e['w'] && e['a']) {
+
+          } else if (keysPressed['w'] && keysPressed['a']) {
             //Movimento Frente - Esquerda
             this.body.position.z -= 1;
             this.body.position.x -= 1;
-          } else if (e['s'] && e['d']) {
+          } else if (keysPressed['s'] && keysPressed['d']) {
             //Movimento Tras - Direita
             this.body.position.z += 1;
             this.body.position.x += 1;
-          } else if (e['s'] && e['a']) {
+          } else if (keysPressed['s'] && keysPressed['a']) {
             //Movimento Tras - Esquerda
             this.body.position.z += 1;
             this.body.position.x -= 1;
-          } else if (e['w']) {
+          } else {
+            if (keysPressed['w']) {
                 this.body.position.z -= 1
-            } else if (e['s']) {
+            } else if (keysPressed['s']) {
                 this.body.position.z += 1
-            } else if (e['a']) {
+            } else if (keysPressed['a']) {
                 this.body.position.x -= 1
-            } else if (e['d']) {
+            } else if (keysPressed['d']) {
                 this.body.position.x += 1
             }
+        }
 
     }
 

@@ -8,6 +8,7 @@ import { Roof } from "./entity/Roof";
 import { Particles } from "./entity/Particles";
 
 import { Textures } from "./utils/Textures";
+import { Bucket } from "./entity/Bucket";
 
 /* instanciando os objetos em cena */
 
@@ -54,6 +55,17 @@ const player = new Player({
 
 scene.add(player.mesh);
 world.addBody(player.body);
+
+const bucket = new Bucket({
+  player: player,
+  
+  width: 5,
+  height: 5,
+  depth: 5
+});
+
+scene.add(bucket.mesh);
+world.addBody(bucket.body);
 
 
 const roof = new Roof({
@@ -107,6 +119,7 @@ function animate() {
   controls.update();
   
   player.update();
+  bucket.update();
 
   world.step(1 / 60); // Configura os passos da simulação em 60Hz
   //world.fixedStep();
