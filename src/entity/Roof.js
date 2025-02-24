@@ -2,10 +2,10 @@ import * as THREE from "three";
 
 class Roof {
 
-    constructor({ width, height }) {
+    constructor({ width, height, texture }) {
         this.width   = width;
         this.height  = height;
-
+        this.texture = texture;
 
         this.geometry = new THREE.PlaneGeometry(
             this.width,
@@ -13,7 +13,7 @@ class Roof {
         );
 
         this.material = new THREE.MeshBasicMaterial({
-            color: "blue",
+            map:  this.texture,
             side:  THREE.DoubleSide
         });
 

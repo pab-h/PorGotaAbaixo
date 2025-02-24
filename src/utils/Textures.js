@@ -12,6 +12,11 @@ class Textures {
         );
         this.ground.colorSpace = THREE.SRGBColorSpace;
 
+        this.roof = this.loader.load(
+            "/textures/roof_tiles.jpg"
+        );
+        this.ground.colorSpace = THREE.SRGBColorSpace;
+
     }
 
 }

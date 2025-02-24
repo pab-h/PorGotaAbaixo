@@ -58,7 +58,7 @@ world.addBody(player.body);
 const roof = new Roof({
   width: 50, 
   height: 50,
-  texture: textures.ground
+  texture: textures.roof
 });
 
 scene.add(roof.mesh);
