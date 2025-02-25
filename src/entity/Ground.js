@@ -25,7 +25,13 @@ class Ground {
 
         this.body = new CANNON.Body({
             type: CANNON.Body.STATIC,
-            shape: new CANNON.Plane()
+            shape: new CANNON.Box(
+                new THREE.Vector3(
+                    this.width/2, 
+                    this.height/2, 
+                    0.1
+                )
+            )
         });
           
         this.body.quaternion.setFromEuler(
