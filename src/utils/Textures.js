@@ -17,6 +17,12 @@ class Textures {
         );
         this.ground.colorSpace = THREE.SRGBColorSpace;
 
+
+        this.bucketTop = this.loader.load(
+            "/textures/bucket/top.png"
+        )
+        this.bucketTop.colorSpace = THREE.SRGBColorSpace;
+
     }
 
 }

@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import * as CANNON from "cannon-es";
+
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 import { Player } from "./entity/Player";
@@ -42,6 +43,8 @@ const controls = new OrbitControls(
 
 controls.update();
 
+scene.add(new THREE.AmbientLight(0x404040));
+
 const world = new CANNON.World({
   gravity: new CANNON.Vec3(0, -9.82, 0)
 });
@@ -59,9 +62,15 @@ world.addBody(player.body);
 const bucket = new Bucket({
   player: player,
   
-  width: 5,
-  height: 5,
-  depth: 5
+  textures: textures,
+
+  radiusTop: 3, 
+  radiusBottom: 2, 
+  height: 5
+});
+
+bucket.body.addEventListener("collide", event => {
+  console.log(event);
 });
 
 scene.add(bucket.mesh);

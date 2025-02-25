@@ -35,7 +35,7 @@ class Particles {
 
         const particleShape = new CANNON.Sphere(this.radius);
         const particleBody = new CANNON.Body({
-          mass: 1,
+          mass: .01,
           position: vec3_coordinates
         });
         particleBody.addShape(particleShape);
