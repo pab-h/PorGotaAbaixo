@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "cannon-es": "^0.20.0",
-    "three": "^0.173.0"
+    "three": "^0.173.0",
+    "three-to-cannon": "^5.0.2"
   }
 }
