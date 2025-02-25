@@ -10,6 +10,7 @@ import { Particles } from "./entity/Particles";
 
 import { Textures } from "./utils/Textures";
 import { Bucket } from "./entity/Bucket";
+import { Steve } from "./entity/PlayerCharacter";
 
 /* instanciando os objetos em cena */
 
@@ -49,7 +50,16 @@ const world = new CANNON.World({
   gravity: new CANNON.Vec3(0, -9.82, 0)
 });
 
+const BASE_URI = "https://mineskin.eu/skin/";
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+const name = urlParams.get("name");
 
+const player2 = new Steve(BASE_URI + name, world);
+player2.setPosition(0, 0, 0)
+scene.add(player2.steve)
+
+/*
 const player = new Player({
   width: 5,
   height: 10,
@@ -58,9 +68,10 @@ const player = new Player({
 
 scene.add(player.mesh);
 world.addBody(player.body);
+*/
 
 const bucket = new Bucket({
-  player: player,
+  player: player2,
   
   textures: textures,
 
@@ -100,12 +111,14 @@ const keysPressed = {};
 
 window.addEventListener('keydown', (event) => {
   keysPressed[event.key.toLowerCase()] = true;
-  player.keypress(keysPressed);
+//  player.keypress(keysPressed);
+  player2.keypress(keysPressed);
 });
 
 window.addEventListener('keyup', (event) => {
   keysPressed[event.key.toLowerCase()] = false;
-  player.keypress(keysPressed);
+//  player.keypress(keysPressed);
+  player2.keypress(keysPressed);
 });
 
 /* Particulas */
@@ -126,7 +139,8 @@ function animate() {
 
   controls.update();
   
-  player.update();
+  
+  player2.update();
   bucket.update();
 
   world.step(1 / 60);
@@ -149,7 +163,6 @@ function animate() {
   }
 
   dropTimer++;
-
 
 }
 

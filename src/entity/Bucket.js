@@ -16,7 +16,7 @@ class Bucket {
             this.radiusBottom,
             this.height,
             16,
-            16,
+            16
         )
 
         this.mesh = new THREE.Mesh(
@@ -41,8 +41,8 @@ class Bucket {
             mass: 3,
             shape: new CANNON.Box(
                 new THREE.Vector3(
-                    this.player.width / 2, 
-                    this.player.height / 2, 
+                    this.player.getWidth() / 2, 
+                    this.player.getHeight() / 2, 
                     this.depth / 2
                 )
             )
@@ -51,11 +51,10 @@ class Bucket {
     }
 
     update() {
-
         this.body.position.set(
-            this.player.body.position.x,
-            this.player.body.position.y + this.player.height / 2 + this.height / 2,
-            this.player.body.position.z
+            this.player.getX(),
+            this.player.getY() + this.player.getHeight() / 2 + this.height / 2,
+            this.player.getZ()
         );
 
         this.mesh.position.copy(this.body.position);
