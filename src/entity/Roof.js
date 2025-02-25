@@ -1,5 +1,4 @@
 import * as THREE from "three";
-import { vec3 } from "three/tsl";
 
 class Roof {
 
@@ -32,19 +31,6 @@ class Roof {
         this.mesh.position.y = 50;
 
     }
-
-    getPosition() {
-        return new THREE.Vector3(this.mesh.position.x, this.mesh.position.y, this.mesh.position.z);
-    }
-
-    getWidth() {
-        return this.width
-    }
-
-    getHeight() {
-        return this.height
-    }
-
 
 };
 

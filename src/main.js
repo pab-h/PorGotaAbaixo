@@ -110,7 +110,7 @@ window.addEventListener('keyup', (event) => {
 
 /* Particulas */
 const particlesFactory = new Particles({
-  elementReference: roof,
+  roof: roof,
   world: world,
   scene: scene
 });

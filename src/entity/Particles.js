@@ -1,14 +1,43 @@
 import * as THREE from "three";
 import * as CANNON from "cannon-es";
 
+class Particle {
+    
+    constructor(radius) {
+        this.radius = radius;
+
+
+        this.geometry = new THREE.SphereGeometry(
+            radius, 8, 8
+        );
+        this.material = new THREE.MeshBasicMaterial({
+            color: "blue"
+        });
+        this.mesh = new THREE.Mesh(
+            this.geometry,
+            this.material
+        );
+
+        this.body = new CANNON.Body({
+            shape: new CANNON.Sphere(radius),
+            mass: 0.001
+        });
+
+    }
+
+    update() {
+        this.mesh.position.copy(this.body.position);
+        this.mesh.quaternion.copy(this.body.quaternion);
+    }
+
+}
+
 class Particles {
 
-    constructor({ elementReference, world, scene }) {
-        this.elementReference = elementReference;
+    constructor({ roof, world, scene }) {
+        this.roof = roof;
         this.world = world;
         this.scene = scene;
-
-        this.defaultParticleRadius = 0.15;
 
         this.particles = [];  
     }
@@ -18,45 +47,37 @@ class Particles {
     }
     
     getRandomCoordinates() {
-        const min_x = (this.elementReference.getPosition().x - (this.elementReference.getHeight()/2))
-        const max_x = (this.elementReference.getPosition().x + (this.elementReference.getHeight()/2))
-        const min_z = (this.elementReference.getPosition().z - (this.elementReference.getWidth()/2))
-        const max_z = (this.elementReference.getPosition().z + (this.elementReference.getWidth()/2))
+        const minX = (this.roof.mesh.position.x - (this.roof.height / 2))
+        const maxX = (this.roof.mesh.position.x + (this.roof.height / 2))
+        const minZ = (this.roof.mesh.position.z - (this.roof.width / 2))
+        const maxZ = (this.roof.mesh.position.z + (this.roof.width / 2))
 
-        const x = this.getRandomInt(min_x, max_x);
-        const y = this.elementReference.getPosition().y + 1;  
-        const z = this.getRandomInt(min_z, max_z);;
+        const x = this.getRandomInt(minX, maxX);
+        const y = this.roof.mesh.position.y - 5;  
+        const z = this.getRandomInt(minZ, maxZ);;
 
         return new CANNON.Vec3(x, y, z);
     }
 
-    createRandomParticle(particleRadius) {
-        const vec3_coordinates = this.getRandomCoordinates()
+    createRandomParticle(radius) {
+        const randomPosition = this.getRandomCoordinates()
 
-        const particleShape = new CANNON.Sphere(this.radius);
-        const particleBody = new CANNON.Body({
-          mass: .01,
-          position: vec3_coordinates
-        });
-        particleBody.addShape(particleShape);
-        this.world.addBody(particleBody);
-
-        const geometry = new THREE.SphereGeometry(particleRadius, 8, 8);
-        const material = new THREE.MeshBasicMaterial({ color: Math.random() * 0x2596BE });
-        const particleMesh = new THREE.Mesh(geometry, material);
         
-        particleMesh.position.copy(vec3_coordinates);
-        
-        particleMesh.userData.physicsBody = particleBody;
+        const particle = new Particle(radius);
 
-        this.scene.add(particleMesh);
+        particle.body.position.copy(randomPosition);
 
-        return particleMesh;
+        this.scene.add(particle.mesh);
+        this.world.addBody(particle.body);
+
+        return particle;
     }
 
-    createParticles(particleAmount, particleRadius = this.defaultParticleRadius) {
+    createParticles(particleAmount) {
         for (let i = 0; i < particleAmount; i++) {
-            this.particles.push(this.createRandomParticle(particleRadius));
+            const randomParticle = this.createRandomParticle(1);
+
+            this.particles.push(randomParticle);
         }
     }
 
@@ -65,16 +86,15 @@ class Particles {
             let removedParticle = this.particles.pop();
             
             if(removedParticle !== undefined) {
-                this.scene.remove(removedParticle)
-                this.world.removeBody(removedParticle)
+                this.scene.remove(removedParticle.mesh)
+                this.world.removeBody(removedParticle.body)
             }
         }
     }
 
     updateParticles() {
         this.particles.forEach(particle => {
-            const { x, y, z } = particle.userData.physicsBody.position;
-            particle.position.set(x, y, z);
+            particle.update();
         });
     }
 
