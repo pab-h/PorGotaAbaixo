@@ -1,0 +1,11 @@
+Model Information:
+* title:	Metal bucket
+* source:	https://sketchfab.com/3d-models/metal-bucket-0a7a3ccfdb624369b54dc7e06a5f2486
+* author:	Kozlov Maksim (https://sketchfab.com/kozlovchik)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Metal bucket" (https://sketchfab.com/3d-models/metal-bucket-0a7a3ccfdb624369b54dc7e06a5f2486) by Kozlov Maksim (https://sketchfab.com/kozlovchik) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
