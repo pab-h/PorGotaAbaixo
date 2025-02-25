@@ -34,7 +34,12 @@ class Bucket {
 
         this.body = new CANNON.Body({ mass: 1 });
         this.body.addShape(bucketShape, offset, orientation);
-        
+
+        this.body.quaternion.setFromEuler(
+            -Math.PI / 2, 
+            0,
+            0
+        );
     }
     
     update() {
