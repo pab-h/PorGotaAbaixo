@@ -3,25 +3,39 @@ import * as CANNON from "cannon-es";
 
 class Bucket {
 
-    constructor({ player, width, height, depth }) {
+    constructor({ player, radiusTop, radiusBottom, height, textures }) {
 
         this.player = player;
 
-        this.width  = width;
+        this.radiusTop = radiusTop;
+        this.radiusBottom = radiusBottom;
         this.height = height;
-        this.depth  = depth;
 
-
-        this.geometry = new THREE.BoxGeometry(
-            this.width,
+        this.geometry = new THREE.CylinderGeometry(
+            this.radiusTop,
+            this.radiusBottom,
             this.height,
-            this.depth
-        );
-        this.material = new THREE.MeshBasicMaterial({ color: "red" });
-        this.mesh     = new THREE.Mesh(
+            16,
+            16,
+        )
+
+        this.mesh = new THREE.Mesh(
             this.geometry,
-            this.material
-        );
+            [
+                new THREE.MeshBasicMaterial({ 
+                    color: "rgb(180, 70, 73)",
+                    transparent: true 
+                }),
+                new THREE.MeshBasicMaterial({ 
+                    map: textures.bucketTop,
+                    transparent: true 
+                }),
+                new THREE.MeshBasicMaterial({ 
+                    color: "rgb(180, 70, 73)",
+                    transparent: true 
+                }),
+            ]
+        )
 
         this.body = new CANNON.Body({
             mass: 3,
