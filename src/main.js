@@ -137,7 +137,7 @@ async function main() {
 
     controls.update();
     
-    player.update();
+    player2.update();
     bucket.update();
   
     world.step(1 / 60);
