@@ -6,12 +6,12 @@ class Particle {
     constructor(radius) {
         this.radius = radius;
 
-
+        this.colors = ["blue", 0x5DE2E7]
         this.geometry = new THREE.SphereGeometry(
             radius, 8, 8
         );
         this.material = new THREE.MeshBasicMaterial({
-            color: "blue"
+            color: this.colors[Math.floor(Math.random()*2 )]
         });
         this.mesh = new THREE.Mesh(
             this.geometry,
