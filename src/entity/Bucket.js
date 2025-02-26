@@ -33,6 +33,7 @@ class Bucket {
         } = threeToCannon(this.mesh, { type: ShapeType.MESH });
 
         this.body = new CANNON.Body({ mass: 1 });
+        this.body.id = 0;
         this.body.addShape(bucketShape, offset, orientation);
 
         this.body.quaternion.setFromEuler(
@@ -41,7 +42,7 @@ class Bucket {
             0
         );
     }
-    
+
     update() {
         this.body.position.set(
             this.player.getX(),
