@@ -34,10 +34,11 @@ class Particle {
 
 class Particles {
 
-    constructor({ roof, world, scene }) {
+    constructor({ roof, world, scene, particleRadius }) {
         this.roof = roof;
         this.world = world;
         this.scene = scene;
+        this.particleRadius = particleRadius;
 
         this.particles = [];  
     }
@@ -75,7 +76,7 @@ class Particles {
 
     createParticles(particleAmount) {
         for (let i = 0; i < particleAmount; i++) {
-            const randomParticle = this.createRandomParticle(1);
+            const randomParticle = this.createRandomParticle(this.particleRadius);
 
             this.particles.push(randomParticle);
         }
