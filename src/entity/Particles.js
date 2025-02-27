@@ -6,14 +6,13 @@ class Particle {
     constructor(radius, bucketId) {
         this.radius = radius;
         this.bucketId = bucketId;
-
         this.ballCount = 0;
-
+        this.colors = ["blue", 0x5DE2E7]
         this.geometry = new THREE.SphereGeometry(
             radius, 8, 8
         );
         this.material = new THREE.MeshBasicMaterial({
-            color: "blue"
+            color: this.colors[Math.floor(Math.random()*2 )]
         });
         this.mesh = new THREE.Mesh(
             this.geometry,
@@ -68,7 +67,7 @@ class Particle {
 }
 
 class Particles {
-
+  
     constructor({ roof, world, scene, bucketId }) {
         this.roof = roof;
         this.world = world;
@@ -115,7 +114,7 @@ class Particles {
 
     createParticles(particleAmount) {
         for (let i = 0; i < particleAmount; i++) {
-            const randomParticle = this.createRandomParticle(1);
+            const randomParticle = this.createRandomParticle(this.particleRadius);
 
             this.particles.push(randomParticle);
         }
