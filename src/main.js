@@ -135,12 +135,14 @@ async function main() {
     roof: roof,
     world: world,
     scene: scene,
-    particleRadius: 0.5
+    bucketId: bucket.body.id
   });
   
   particlesFactory.createParticles(2);
   
   let dropTimer = 0;
+  
+
   
   
   /* Rendenização */
@@ -162,11 +164,11 @@ async function main() {
     );
   
   
-    if(dropTimer % 100 == 0){
+    if(dropTimer == 150 || dropTimer == 300){
       particlesFactory.createParticles(1);
     }
   
-    if(dropTimer > 205) {
+    if(dropTimer > 500) {
       particlesFactory.removeParticles(1);
       dropTimer = 0;
     }
