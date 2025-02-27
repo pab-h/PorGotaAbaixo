@@ -1,0 +1,34 @@
+Estilização básica para interface
+body {
+    margin: 0;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+}
+
+#ui {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    color: white;
+    font-size: 20px;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 10px;
+    border-radius: 5px;
+}
+
+#game-title {
+    width: 150px;  /* Ajuste o tamanho conforme necessário */
+    display: block;
+    margin-bottom: 10px;  /* Espaço abaixo do título */
+}
+
+h1 {
+    font-size: 24px;
+    margin: 0;
+}
+
+#score {
+    font-family: "Courier New", monospace;  /* Estilo pixelado */
+    font-size: 18px;
+    margin-top: 5px;
+}
